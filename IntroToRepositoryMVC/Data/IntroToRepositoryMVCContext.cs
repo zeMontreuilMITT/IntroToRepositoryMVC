@@ -14,6 +14,14 @@ namespace IntroToRepositoryMVC.Data
         {
         }
 
-        public DbSet<IntroToRepositoryMVC.Models.Movie> Movie { get; set; } = default!;
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Role>()
+                .HasKey(r => new { r.MovieId, r.ActorId });
+        }
+
+        public DbSet<Movie> Movie { get; set; } = default!;
+        public DbSet<Actor> Actor { get; set; } = default!;
+        public DbSet<Role> Role { get; set; } = default!;
     }
 }

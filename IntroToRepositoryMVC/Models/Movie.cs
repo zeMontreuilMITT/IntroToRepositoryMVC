@@ -18,5 +18,7 @@ namespace IntroToRepositoryMVC.Models
 
         [DataType(DataType.Date)]
         public DateTime ReleaseDate { get; set; }
+
+        public HashSet<Role> Roles { get; set; } = new HashSet<Role>();
     }
 }

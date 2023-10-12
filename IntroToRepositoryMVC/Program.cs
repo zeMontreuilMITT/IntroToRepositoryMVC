@@ -11,6 +11,7 @@ builder.Services.AddDbContext<IntroToRepositoryMVCContext>(options =>
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped(typeof(IRepository<Movie>), typeof(MovieRepository));
+builder.Services.AddScoped(typeof(IRepository<Actor>), typeof(ActorRepository));    
 
 var app = builder.Build();
 
