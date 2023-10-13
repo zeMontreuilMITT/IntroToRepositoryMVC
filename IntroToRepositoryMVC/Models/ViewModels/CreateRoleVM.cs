@@ -8,6 +8,9 @@ namespace IntroToRepositoryMVC.Models.ViewModels
         public HashSet<SelectListItem> Actors { get; set; } = new HashSet<SelectListItem>();
         public HashSet<SelectListItem> Movies { get; set; } = new HashSet<SelectListItem>();
 
+        public int ActorId { get; set; }
+        public int MovieId { get; set; }
+
         [Required]
         [Display(Name = "Role Name")]
         public string RoleName { get; set; }
@@ -24,6 +27,11 @@ namespace IntroToRepositoryMVC.Models.ViewModels
             {
                 Movies.Add(new SelectListItem(m.Title, m.Id.ToString()));
             }
+        }
+
+        public CreateRoleVM()
+        {
+
         }
 
     }

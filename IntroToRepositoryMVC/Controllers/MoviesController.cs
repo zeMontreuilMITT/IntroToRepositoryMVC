@@ -14,29 +14,54 @@ namespace IntroToRepositoryMVC.Controllers
 {
     public class MoviesController : Controller
     {
-        MovieBusinessLogic mbl;
-        public MoviesController(IRepository<Movie> movieRepo, IRepository<Actor> actorRepo)
+        private readonly MovieBusinessLogic _movieBusinessLogic;
+        public MoviesController(IRepository<Movie> movieRepo, IRepository<Actor> actorRepo, IRepository<Role> roleRepo)
         {
-            mbl = new MovieBusinessLogic(movieRepo, actorRepo);
+            _movieBusinessLogic = new MovieBusinessLogic(movieRepo, actorRepo, roleRepo);
         }
 
         public ActionResult Details(int id)
         {
             try
             {
-                Movie movie = mbl.GetMovie(id);
+                Movie movie = _movieBusinessLogic.GetMovie(id);
                 return View(movie);
             } catch (InvalidOperationException ex) {
                 return NotFound(ex.Message);
             }
         }
 
+        // GET
         public ActionResult CreateRole()
         {
             // what would we want to do to unit test this method?
-            CreateRoleVM vm = mbl.InitializeCreateRoleVM();
+            CreateRoleVM vm = _movieBusinessLogic.InitializeCreateRoleVM();
 
             return View(vm);
+        }
+
+        // POST
+        [HttpPost]
+        public ActionResult CreateRole(CreateRoleVM vm)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Actor actor = _movieBusinessLogic.GetActor(vm.ActorId);
+                    Movie movie = _movieBusinessLogic.GetMovie(vm.MovieId);
+
+                    _movieBusinessLogic.AddToRole(movie, actor, vm.RoleName);
+
+                    return RedirectToAction(nameof(Details), new { id = movie.Id });
+                }
+                catch (Exception ex)
+                {
+                    return Problem(detail: ex.Message);
+                }
+            }
+
+            return Problem("Invalid Role values");
         }
     }
 }

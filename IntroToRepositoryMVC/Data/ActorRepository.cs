@@ -40,8 +40,5 @@ namespace IntroToRepositoryMVC.Data
             _context.SaveChanges();
             return entity;
         }
-
-
-
     }
 }
